@@ -1,0 +1,36 @@
+Minecraft 1.14.4 (1.14.4/vanilla)
+Java: 1.8.0_51 64bit
+60 fps (45 chunk updates) T: inf vsync fancy-clouds vbo
+Mem: 35% 737/2048MB
+Integrated server @11 ms ticks, 12 tx, 997 rx
+Allocated: 81% 1664MB
+C: 499/15376 (s) D: 15, pC: 000, pU: 00, aB:32
+E: 13/111, B: 0
+CPU: 16x AMD Ryzen 7 1700 Eight-Core Processor
+P: 94. T: 111
+Client Chunk Cache: 1089, 782
+Display: 1920x1080 (NVIDIA Corporation)
+ServerChunkCache: 3762
+GeForce GTX 1060 6GB/PCIe/SSE2
+minecraft:overworld FC: 0
+4.6.0 NVIDIA 431.60
+
+XYZ: 298.985 / 68.00000 / 378.858
+Targeted Fluid
+Block: 298 68 378
+minecraft:water
+Chunk: 10 4 10 in 18 4 23
+falling: false
+Facing: east (Towards positive X) (-61.2 / 20.7)
+#minecraft:water
+Client Light: 15 (15 sky, 0 block)
+Server Light: (15 sky, 0 block)
+CH S: 67 M: 67
+SH S: 67 O: 67 M: 67 ML: 67
+Biome: minecraft:desert
+Local Difficulty: 1.65 // 0.00 (Day 20)
+Looking at liquid: 314 62 387
+Sounds: 3/247 + 0/8
+
+Debug: Pie [shift]: hidden FPS + TPS [alt]: hidden
+For help: press F3 + Q
