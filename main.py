@@ -5,6 +5,7 @@ import os
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
 from google.cloud import vision
 import seaborn as sns
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
@@ -19,7 +20,10 @@ if not os.path.exists('output'):
     os.mkdirs('output')
 output_dir = 'output'
 
-vision_api_key_location = r'D:\Docs\Python_code\Google-vision-api\minecraft-mapper-20c761f10d32.json'
+ap = argparse.ArgumentParser()
+ap.add_argument('-ak', '--api_key', help='Location of Google Vision API key', required=True)
+args = ap.parse_args()
+vision_api_key_location = args.api_key
 
 
 def get_string(img, config=r'--psm 3'):
@@ -165,6 +169,7 @@ def create_dataframe():
     df.to_json(os.path.join('output', 'dataframe.json'), orient='records')
     return df
 
+
 def hover(event):
     # if the mouse is over the scatter points
     if line.contains(event)[0]:
@@ -187,10 +192,51 @@ def hover(event):
         # if the mouse is not over a scatter point
         ab.set_visible(False)
     fig.canvas.draw_idle()
-    
+
 
 if __name__ == '__main__':
-    df = create_dataframe()
+
+    df = None
+    try:  # check if already a database json file
+        df = pd.read_json(os.path.join('output', 'dataframe.json'), orient='records')
+    except ValueError:
+        print('No dataframe found, creating new.')
+    if df is None:
+        print('[INFO] Creating dataframe...')
+        df = pd.DataFrame(columns=['Screenshot', 'Text', 'Coords_x', 'Coords_y', 'Coords_z', 'Biomes'])
+        for entry in os.scandir(screenshot_dir):
+            if entry.path.endswith(".png") and entry.is_file():
+                img = cv2.imread(entry.path)
+                entry_name, text, coords, biomes = do_steps(img, entry)
+                img_thumb = image_resize(img, 270)
+                if coords:
+                    print('[INFO] Adding new entry: {}'.format(entry.name))
+                    df = df.append(
+                        {'Screenshot': [entry_name], 'Text': text, 'Coords_x': coords[0], 'Coords_y': coords[1],
+                         'Coords_z': coords[2], 'Biomes': biomes,
+                         'Image': cv2.cvtColor(img_thumb, cv2.COLOR_BGR2RGB).astype(np.uint8)}, ignore_index=True)
+                else:
+                    print('[INFO] no coordinates found: {}'.format(entry.name))
+
+    else:  # df already exists, check what images don't have entries and append
+        for entry in os.scandir(screenshot_dir):
+            if entry.path.endswith(".png") and entry.is_file():
+                if entry.name in df.Screenshot.str[0].values:
+                    print('[INFO] Entry already exists: {}'.format(entry.name))
+                else:
+                    print('[INFO] Adding new entry: {}'.format(entry.name))
+                    img = cv2.imread(entry.path)
+                    entry_name, text, coords, biomes = do_steps(img, entry)
+                    img_thumb = image_resize(img, 270)
+                    if coords:
+                        df = df.append(
+                            {'Screenshot': [entry_name], 'Text': text, 'Coords_x': coords[0], 'Coords_y': coords[1],
+                             'Coords_z': coords[2], 'Biomes': biomes,
+                             'Image': cv2.cvtColor(img_thumb, cv2.COLOR_BGR2RGB)}, ignore_index=True)
+                    else:
+                        print('[INFO] no coordinates found: {}'.format(entry.name))
+
+    df.to_json(os.path.join('output', 'dataframe.json'), orient='records')
 
     # Generate data x, y for scatter and an array of images.
     x = df.Coords_x
