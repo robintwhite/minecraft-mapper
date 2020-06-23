@@ -8,7 +8,7 @@ conda env create -f mapper_env.yml
 ```
 Run with
 ```
-python run main.py --api_key location/of/API/key.json
+python main.py --api_key location/of/API/key.json
 ```
 Jupyter notebook for testing prototyping during development.<br>
 
