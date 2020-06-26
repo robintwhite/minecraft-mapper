@@ -12,6 +12,6 @@ python main.py --api_key location/of/API/key.json
 ```
 Jupyter notebook for testing prototyping during development.<br>
 
-See Medium article: [Minecraft Mapper](https://medium.com/@robint.white90/minecraft-mapper-ab4478e98297?sk=b99f29369c15438a459b8f205881bf9a)
+See Medium article: [Minecraft Mapper](https://medium.com/p/minecraft-mapper-ab4478e98297?source=email-c5eb85d3a614--writer.postDistributed&sk=b99f29369c15438a459b8f205881bf9a)
 
 ![Plot extracted data](minecraft_mapper.gif)
